@@ -2,6 +2,7 @@ const $results = $("#results");
 const $query = $("#query");
 
 let timer = null;
+let currentRun = 0;
 
 function search() {
     if (timer !== null) {
@@ -15,8 +16,13 @@ function search() {
 }
 
 async function runSearch() {
+    const thisRun = currentRun + 1;
+    currentRun = thisRun;
 
     const { words, definitions } = await $.get("/words?query=" + $query.val());
+
+    // If a later API request finishes faster somehow, don't overwrite it!
+    if (thisRun < currentRun) return;
 
     $results.empty();
 
@@ -33,7 +39,7 @@ async function runSearch() {
 
         if (i === 0 && definitions.length > 0) {
             const $container = $("<div>")
-                .addClass("px-4 pb-4 border-l-2 border-gray-500")
+                .addClass("px-4 pb-4 border-l-2 border-gray-800")
                 .appendTo($results);
 
             for (const definition of definitions) {
@@ -46,23 +52,25 @@ async function runSearch() {
                     .appendTo(title);
 
                 $("<span>")
-                    .addClass("text-gray-400 ml-4")
+                    .addClass("text-gray-500 ml-4 italic")
                     .text(definition.fl)
                     .appendTo(title);
 
-                if (definition.hwi.prs !== undefined) {
-                    $("<span>")
-                        .addClass("text-gray-400 ml-4")
-                        .text(definition.hwi.prs[0].mw)
-                        .appendTo(title);
-                }
+                // Show pronunciation
+                // if (definition.hwi.prs !== undefined) {
+                //     $("<span>")
+                //         .addClass("text-gray-500 ml-4")
+                //         .text("(" + definition.hwi.prs[0].mw + ")")
+                //         .appendTo(title);
+                // }
 
                 const $list = $("<ul>")
                     .addClass("list-disc pl-8")
                     .appendTo($container);
+
                 for (const shortDef of definition.shortdef) {
                     $("<li>")
-                        .addClass("text-white mt-4")
+                        .addClass("text-gray-400 mt-4")
                         .text(shortDef)
                         .appendTo($list);
                 }

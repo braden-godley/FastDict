@@ -13,7 +13,7 @@
         <!-- Styles / Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dictionary.js'])
     </head>
-    <body class="font-sans antialiased dark:bg-black dark:text-white/50">
+    <body class="font-sans antialiased bg-black text-white/50">
         <div class="max-w-md mx-auto pt-4 mb-4 md:pt-16 px-4">
             <h1 class="text-2xl text-white mb-4">FastDict</h1>
             <input id="query" class="px-4 py-2 text-black mb-4 w-full" type="text" autofocus>

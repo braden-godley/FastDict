@@ -58,7 +58,7 @@ async function runSearch() {
                 }
 
                 const $list = $("<ul>")
-                    .addClass("list-disc pl-8 pb-2")
+                    .addClass("list-disc pl-8")
                     .appendTo($container);
                 for (const shortDef of definition.shortdef) {
                     $("<li>")

@@ -37,6 +37,11 @@ async function runSearch() {
     for (let i = 0; i < words.length; i++) {
         const word = words[i];
 
+        const $result = $("<p>")
+            .addClass("px-4 py-2")
+            .text(word.word);
+        $result.appendTo($results);
+
         if (i === 0 && definitions.length > 0) {
             const $container = $("<div>")
                 .addClass("px-4 pb-4 border-l-2 border-gray-800")
@@ -75,11 +80,6 @@ async function runSearch() {
                         .appendTo($list);
                 }
             }
-        } else {
-            const $result = $("<p>")
-                .addClass("px-4 py-2")
-                .text(word.word);
-            $result.appendTo($results);
         }
     }
 }

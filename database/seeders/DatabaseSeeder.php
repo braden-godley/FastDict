@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
     private function seedWords(): void
     {
         // Load file
-        $filePath = resource_path('words_alpha.txt');
+        $filePath = resource_path('wl.txt');
         $fileContents = file_get_contents($filePath);
         $words = explode("\n", $fileContents);
 

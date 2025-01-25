@@ -12,7 +12,7 @@ function search() {
     timer = setTimeout(() => {
         runSearch();
         timer = null;
-    }, 200);
+    }, 30);
 }
 
 async function runSearch() {
@@ -42,44 +42,50 @@ async function runSearch() {
             .text(word.word);
         $result.appendTo($results);
 
-        if (i === 0 && definitions.length > 0) {
+        if (i === 0) {
             const $container = $("<div>")
                 .addClass("px-4 pb-4 border-l-2 border-gray-800")
-                .appendTo($results);
+                .appendTo($results)
+                .hide();
 
-            for (const definition of definitions) {
-                const title = $("<p>").addClass("text-white px-4 pt-4")
-                    .appendTo($container);
+            $.get("/definitions?query=" + word.word)
+                .then(function({ definitions }) {
+                    if (definitions === null || thisRun < currentRun) return;
+                    for (const definition of definitions) {
+                        const title = $("<p>").addClass("text-white px-4 pt-4")
+                            .appendTo($container);
 
-                $("<span>")
-                    .addClass("font-bold")
-                    .text(definition.hwi.hw.replaceAll("*", ""))
-                    .appendTo(title);
+                        $("<span>")
+                            .addClass("font-bold")
+                            .text(definition.hwi.hw.replaceAll("*", ""))
+                            .appendTo(title);
 
-                $("<span>")
-                    .addClass("text-gray-500 ml-4 italic")
-                    .text(definition.fl)
-                    .appendTo(title);
+                        $("<span>")
+                            .addClass("text-gray-500 ml-4 italic")
+                            .text(definition.fl)
+                            .appendTo(title);
 
-                // Show pronunciation
-                // if (definition.hwi.prs !== undefined) {
-                //     $("<span>")
-                //         .addClass("text-gray-500 ml-4")
-                //         .text("(" + definition.hwi.prs[0].mw + ")")
-                //         .appendTo(title);
-                // }
+                        // Show pronunciation
+                        // if (definition.hwi.prs !== undefined) {
+                        //     $("<span>")
+                        //         .addClass("text-gray-500 ml-4")
+                        //         .text("(" + definition.hwi.prs[0].mw + ")")
+                        //         .appendTo(title);
+                        // }
 
-                const $list = $("<ul>")
-                    .addClass("list-disc pl-8")
-                    .appendTo($container);
+                        const $list = $("<ul>")
+                            .addClass("list-disc pl-8")
+                            .appendTo($container);
 
-                for (const shortDef of definition.shortdef) {
-                    $("<li>")
-                        .addClass("text-gray-400 mt-4")
-                        .text(shortDef)
-                        .appendTo($list);
-                }
-            }
+                        for (const shortDef of definition.shortdef) {
+                            $("<li>")
+                                .addClass("text-gray-400 mt-4")
+                                .text(shortDef)
+                                .appendTo($list);
+                        }
+                    }
+                    $container.show();
+                });
         }
     }
 }

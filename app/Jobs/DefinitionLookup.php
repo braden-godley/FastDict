@@ -23,10 +23,6 @@ class DefinitionLookup implements ShouldQueue
      */
     public function handle(DictionaryService $ds): void
     {
-        $startTime = microtime(true);
         $ds->getDefinitions($this->word);
-        $endTime = microtime(true);
-
-        Log::info("Ran queued lookup", [ "elapsedTime" => $endTime - $startTime, ]);
     }
 }

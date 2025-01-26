@@ -10,6 +10,16 @@ class DictionaryService
 {
     public function getDefinitions(string $word): ?array
     {
+        $startTime = microtime(true);
+        $definition = $this->__getDefinition($word);
+        $endTime = microtime(true);
+
+        Log::info("Got definition", [ "word" => $word, "elapsedTime" => $endTime - $startTime ]);
+
+        return $definition;
+    }
+
+    private function __getDefinition(string $word): ?array {
         $cacheKey = "dictionary:{$word}";
         if (Cache::has($cacheKey)) {
             return Cache::get($cacheKey);
@@ -31,7 +41,7 @@ class DictionaryService
             $lock->block(60);
             $endTime = microtime(true);
 
-            Log::info("Used existing lookup", [ "elapsedTime" => $endTime - $startTime, ]);
+            Log::info("Used existing lookup", [ "word" => $word, "elapsedTime" => $endTime - $startTime, ]);
 
             $definitions = Cache::get($cacheKey);
         }

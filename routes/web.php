@@ -17,7 +17,7 @@ Route::get("/words", function () {
     if ($query !== null) {
         $words = Word::search($query);
 
-        if (count($words) > 0) {
+        if ($words->count() > 0) {
             $firstWord = $words[0];
             DefinitionLookup::dispatch($firstWord);
         }

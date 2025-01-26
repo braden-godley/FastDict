@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DictionaryService
 {
@@ -25,7 +26,12 @@ class DictionaryService
             });
         } else {
             // If we can’t acquire the lock right away, block for up to 60 seconds
+            $startTime = microtime(true);
             $lock->block(60);
+            $endTime = microtime(true);
+
+            Log::info("Used existing lookup", [ "elapsedTime" => $endTime - $startTime, ]);
+
             $definitions = Cache::get($cacheKey);
         }
 

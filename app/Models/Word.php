@@ -14,6 +14,7 @@ class Word extends Model
             ->whereLike('word', $query . "%")
             ->orderByRaw('LENGTH(word) ASC')
             ->take(10)
-            ->get();
+            ->get()
+            ->map(fn ($word) => $word->word);
     }
 }

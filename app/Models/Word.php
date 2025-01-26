@@ -10,6 +10,7 @@ class Word extends Model
     public static function search(string $query): Collection
     {
         return Word::query()
+            ->select(['word'])
             ->whereLike('word', $query . "%")
             ->orderByRaw('LENGTH(word) ASC')
             ->take(10)

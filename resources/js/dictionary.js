@@ -39,7 +39,7 @@ async function runSearch() {
 
         const $result = $("<p>")
             .addClass("px-4 py-2")
-            .text(word.word);
+            .text(word);
         $result.appendTo($results);
 
         if (i === 0) {
@@ -48,7 +48,7 @@ async function runSearch() {
                 .appendTo($results)
                 .hide();
 
-            $.get("/definitions?query=" + word.word)
+            $.get("/definitions?query=" + word)
                 .then(function({ definitions }) {
                     if (definitions === null || thisRun < currentRun) return;
                     for (const definition of definitions) {

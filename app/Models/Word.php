@@ -11,6 +11,7 @@ class Word extends Model
     {
         return Word::query()
             ->whereLike('word', $query . "%")
+            ->orderByRaw('LENGTH(word) ASC')
             ->take(10)
             ->get();
     }

@@ -24,6 +24,7 @@ class DictionaryService
                 $response = Http::get("https://dictionaryapi.com/api/v3/references/collegiate/json/$word?key=$apiKey");
                 return $response->ok() ? $response->json() : null;
             });
+            $lock->release();
         } else {
             // If we can’t acquire the lock right away, block for up to 60 seconds
             $startTime = microtime(true);
@@ -35,7 +36,6 @@ class DictionaryService
             $definitions = Cache::get($cacheKey);
         }
 
-        $lock->release();
 
         return $definitions;
     }

@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Services\DictionaryService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class DefinitionLookup implements ShouldQueue
 {
@@ -22,6 +23,10 @@ class DefinitionLookup implements ShouldQueue
      */
     public function handle(DictionaryService $ds): void
     {
+        $startTime = microtime(true);
         $ds->getDefinitions($this->word);
+        $endTime = microtime(true);
+
+        Log::info("Ran queued lookup", [ "elapsedTime" => $endTime - $startTime, ]);
     }
 }
